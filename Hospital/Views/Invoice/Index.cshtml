@@ -1,0 +1,356 @@
+﻿@model List<Hospital.Models.ViewModels.InvoiceViewModel>
+@{
+    ViewData["Title"] = "Danh sách hóa đơn";
+    var patients = ViewBag.Patients as List<Patient>;
+    var doctors = ViewBag.Doctors as List<staff>;
+    var cashiers = ViewBag.Cashiers as List<staff>;
+    var pharmacists = ViewBag.Pharmacists as List<staff>;
+    var diagnosis = ViewBag.Diagnosis as List<Diagnosis>;
+    var methods = ViewBag.Methods as List<PaymentMethod>;
+    var items = ViewBag.Items as List<Item>;
+    var status = ViewBag.Status as List<InvoiceStatus>;
+}
+
+@section naviheader {
+    <!-- Left navbar links -->
+    <ul class="navbar-nav">
+        <li class="nav-item">
+            <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+        </li>
+        <li class="nav-item d-none d-sm-inline-block">
+            <a href="#" class="nav-link">Trang chủ</a>
+        </li>
+        <li class="nav-item d-none d-sm-inline-block">
+            <a href="#" class="nav-link">Thanh toán viện phí</a>
+        </li>
+    </ul>
+}
+
+<section class="content">
+@* Hóa đơn *@
+<h4>Hóa đơn</h4>
+<form asp-action="Save" method="post" class="mb-4">
+    <input type="hidden" name="InvoiceId" id="InvoiceId"/>
+    <div class="row">
+        @* Bệnh nhân *@
+        <div class="col-md-6 mb-2">
+            <label>Bệnh nhân</label>
+            <select name="PatientId" class="form-control">
+                <option disabled selected>Chọn...</option>
+                @foreach(var p in patients)
+                {
+                    <option value="@p.PatientId">
+                        @p.FullName
+                    </option>
+                }
+            </select>
+        </div>
+        @* Bác sĩ *@
+        <div class="col-md-6 mb-2">
+            <label>Bác sĩ</label>
+            <select name="DoctorId" class="form-control">
+                <option disabled selected>Chọn...</option>
+                @foreach (var d in doctors)
+                {
+                    <option value="@d.StaffId">
+                        @d.FullName
+                    </option>
+                }
+            </select>
+        </div>
+        @* Thu ngân *@
+        <div class="col-md-6 mb-2">
+            <label>Thu ngân</label>
+            <select name="CashierId" class="form-control">
+                <option disabled selected>Chọn...</option>
+                @foreach (var c in cashiers)
+                {
+                    <option value="@c.StaffId">
+                        @c.FullName
+                    </option>
+                }
+            </select>
+        </div>
+        @* Dược sĩ *@
+        <div class="col-md-6 mb-2">
+            <label>Dược sĩ</label>
+            <select name="PharmacistId" class="form-control">
+                <option disabled selected>Chọn...</option>
+                @foreach (var ph in pharmacists)
+                {
+                    <option value="@ph.StaffId">
+                        @ph.FullName
+                    </option>
+                }
+            </select>
+        </div>
+        @* Chẩn đoán *@
+        <div class="col-md-6 mb-2">
+            <label>Chẩn đoán</label>
+            <select name="DiagnosisId" class="form-control">
+                <option disabled selected>Chọn...</option>
+                @foreach (var di in diagnosis)
+                {
+                    <option value="@di.DiagnosisId">
+                        @di.DiagnosisName
+                    </option>
+                }
+            </select>
+        </div>
+        @* Ghi chú *@
+        <div class="col-md-6 mb-2">
+            <label>Ghi chú</label>
+            <input type="text" name="Notes" class="form-control" />
+        </div>
+        @* Phương thức thanh toán *@
+        <div class="col-md-6 mb-2">
+            <label>Phương thức thanh toán</label>
+            <select name="PaymentMethodId" class="form-control">
+                <option disabled selected>Chọn...</option>
+                @foreach (var p in methods)
+                {
+                    <option value="@p.PaymentMethodId">
+                        @p.PaymentMethodName
+                    </option>
+                }
+            </select>
+        </div>
+        @* Tổng tiền *@
+        <div class="col-md-6 mb-2">
+            <label>Tổng tiền</label>
+            <input type="text" name="TotalAmount" id="TotalAmount" class="form-control" />
+        </div>
+        @* Trạng thái *@
+        <div class="col-md-6 mb-2">
+            <label>Trạng thái</label>
+            <select name="StatusId" class="form-control">
+                <option disabled selected>Chọn...</option>
+                @foreach (var s in status)
+                {
+                    <option value="@s.StatusId">
+                        @s.StatusName
+                    </option>
+                }
+            </select>
+        </div>
+        @* Ngày tạo *@
+        <div class="col-md-6 mb-2">
+            <label>Ngày tạo</label>
+            <input type="text" id="CreatedAt" name="CreatedAt" class="form-control" placeholder="dd-MM-yyyy" />
+        </div>
+    </div>
+
+    @* Chi tiết hóa đơn *@
+    <h4>Chi tiết hóa đơn</h4>
+    <div id="invoiceDetailContainer">
+        <div class="row mb-2 invoice-detail-item" data-index="0">
+            <input type="hidden" name="InvoiceDetails[0].InvoiceDetailId" value="0" />
+            <div class="col-md-6">
+                <label>Dịch vụ / thuốc</label>
+                <select name="InvoiceDetails[0].ItemId" class="form-control">
+                    @foreach (var i in items)
+                    {
+                        <option value="@i.ItemId">@i.ItemName</option>
+                    }
+                </select>
+            </div>
+            <div class="col-md-4">
+                <label>Số lượng</label>
+                <input type="number" name="InvoiceDetails[0].Quantity" class="form-control" min="1" />
+            </div>
+            <div class="col-md-2 d-flex align-items-end">
+                <button type="button" class="btn btn-danger remove-detail">
+                    <i class="fa fa-trash"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+    <div>
+        <button type="button" id="addDetailBtn" class="btn btn-secondary mb-2">
+            + Thêm chi tiết
+        </button>
+    </div>
+    <button type="submit" class="btn mt-2" style="background-color: #004AAD; color: #FFFCFD;">
+         Lưu
+    </button>
+</form>
+</section>
+
+<section class="content">
+<hr/>
+<h4>Danh sách hóa đơn</h4>
+<div class="table-responsive">
+    <table class="table table-bordered table-striped table-hover">
+        <thead class="custom-header">
+            <tr>
+                <th class="text-center">Bệnh nhân</th>
+                <th class="text-center">Thu ngân</th>
+                <th class="text-center">Chẩn đoán</th>
+                <th class="text-center">Phương thức thanh toán</th>
+                <th class="text-center">Trạng thái</th>
+                <th class="text-center">Tổng tiền</th>
+                <th class="text-center">Ngày tạo</th>
+                <th class="text-center">Tùy chọn</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td class="text-left">@item.PatientName</td>
+                    <td class="text-left">@item.CashierName</td>
+                    <td class="text-left">@item.DiagnosisName</td>
+                    <td class="text-left">@item.PaymentMethodName</td>
+                    <td class="text-left">@item.StatusName</td>
+                    <td class="text-right">@item.TotalAmount.ToString("N0")</td>
+                    <td class="text-center">@item.CreatedAt.ToString("dd-MM-yyyy")</td>
+                    <td class="text-center">
+                        <button type="button"
+                                class="btn btn-sm btn-warning"
+                                title="Sửa"
+                                onclick="editInvoice(
+                            '@item.InvoiceId',
+                            '@item.PatientId',
+                            '@item.DoctorId',
+                            '@item.CashierId',
+                            '@item.PharmacistId',
+                            '@item.DiagnosisId',
+                            '@item.PaymentMethodId',
+                            '@item.StatusId',
+                            '@item.TotalAmount',
+                            '@item.Notes',
+                            '@item.CreatedAt.ToString("yyyy-MM-ddTHH:mm:ss")')">
+                            <i class="fa fa-edit"></i>
+                        </button>
+                        <form asp-action="Delete" method="Post" style="display: inline">
+                            <input type="hidden" name="id" value="@item.InvoiceId" />
+                            <button type="submit" class="btn btn-sm btn-danger" title="Xóa">
+                                <i class="fa fa-trash"></i>
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+</table>
+</div>
+</section>
+
+@section Scripts {
+    <script>
+        flatpickr("#CreatedAt", {
+            dateFormat: "d-m-Y",
+            allowInput: true,
+            locale: "vn"
+        });
+    </script>
+}
+
+<script>
+    function editInvoice(invoiceId, patientId, doctorId, cashierId, pharmacistId, diagnosisId, paymentMethodId, statusId, totalAmount, notes, createdAt) {
+        document.getElementById('InvoiceId').value = invoiceId;
+        document.querySelector('[name="TotalAmount"]').value = totalAmount;
+        document.querySelector('[name="Notes"]').value = notes;
+        document.querySelector('[name="PatientId"]').value = patientId;
+        document.querySelector('[name="DoctorId"]').value = doctorId;
+        document.querySelector('[name="CashierId"]').value = cashierId;
+        document.querySelector('[name="PharmacistId"]').value = pharmacistId;
+        document.querySelector('[name="DiagnosisId"]').value = diagnosisId;
+        document.querySelector('[name="PaymentMethodId"]').value = paymentMethodId;
+        document.querySelector('[name="StatusId"]').value = statusId;
+        document.querySelector('[name="CreatedAt"]').value = formatDateForInput(createdAt);
+
+        fetch(`/Invoice/GetInvoiceDetails?invoiceId=${invoiceId}`)
+            .then(res => res.json())
+            .then(data => {
+                const container = document.getElementById('invoiceDetailContainer');
+                container.innerHTML = '';
+                detailIndex = 0;
+
+                data.forEach((detail, index) => {
+                    const row = document.createElement('div');
+                    row.className = 'row mb-2 invoice-detail-item';
+                    row.dataset.index = index;
+
+                    row.innerHTML = `
+                        <input type="hidden" name="InvoiceDetails[${index}].InvoiceDetailId" value="${detail.InvoiceDetailId}" />
+                        <div class="col-md-6">
+                            <label>Item</label>
+                            <select name="InvoiceDetails[${index}].ItemId" class="form-control">
+                                ${renderItemOptions(detail.itemId)}
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <label>Số lượng</label>
+                            <input type="number" name="InvoiceDetails[${index}].Quantity" class="form-control" value="${detail.quantity}" min="1" />
+                        </div>
+                        <div class="col-md-2 d-flex align-items-end">
+                            <button type="button" class="btn btn-danger remove-detail">X</button>
+                        </div>`;
+                    container.appendChild(row);
+                    detailIndex++;
+                });
+            });
+    }
+
+    // Xử lý chọn option tương ứng trong select khi nhấn nút sửa
+    function renderItemOptions(selectedId) {
+        const items = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(items));
+        return items.map(i =>
+            `<option value="${i.ItemId}" ${i.ItemId === selectedId ? 'selected' : ''}>${i.ItemName}</option>`
+        ).join('');
+    }
+
+    // Thêm chi tiết đơn hàng trên form
+    let detailIndex = 1;
+    document.getElementById('addDetailBtn').addEventListener('click', function () {
+        const container = document.getElementById('invoiceDetailContainer');
+        const original = container.querySelector('.invoice-detail-item');
+        const clone = original.cloneNode(true);
+        clone.dataset.index = detailIndex;
+
+        clone.querySelectorAll('input, select').forEach(el => {
+            if (el.name.includes("InvoiceDetailId")) {
+                el.value = 0;
+            } else {
+                el.value = '';
+            }
+
+            // Cập nhật tên field với index mới
+            const newName = el.name.replace(/\[\d+\]/, `[${detailIndex}]`);
+            el.name = newName;
+        });
+
+        container.appendChild(clone);
+        detailIndex++;
+    });
+
+    // Xử lý xóa chi tiết đơn hàng trên form
+    document.addEventListener('click', function (e) {
+        if (e.target.classList.contains('remove-detail')) {
+            const item = e.target.closest('.invoice-detail-item');
+            if (document.querySelectorAll('.invoice-detail-item').length > 1) {
+                item.remove();
+            }
+        }
+    });
+
+    // Hàm chuyển format ngày yyyy-MM-dd để input date nhận được
+    function formatDateForInput(dateStr) {
+        const date = new Date(dateStr);
+        const dd = String(date.getDate()).padStart(2, '0');
+        const mm = String(date.getMonth() + 1).padStart(2, '0');
+        const yyyy = date.getFullYear();
+        return `${dd}-${mm}-${yyyy}`; // phù hợp với flatpickr format
+    }
+
+    // Xử lý format số. Ví dụ: 1000000 -> 1,000,000
+    document.getElementById("TotalAmount").addEventListener("input", function (e) {
+        let value = e.target.value.replace(/,/g, '').replace(/\D/g, ''); // chỉ giữ số
+        if (value !== "") {
+            e.target.value = Number(value).toLocaleString('en-US'); // định dạng lại có dấu ,
+        } else {
+            e.target.value = "";
+        }
+    });
+</script>
