@@ -20,9 +20,13 @@
         public string PaymentMethodName { get; set; }
         public string StatusName { get; set; }
 
+        public DateTime CreateAt { get; set; }
+
+        public bool Active { get; set; }
+
         public decimal TotalAmount { get; set; }
         public string Notes { get; set; }
-        public DateTime CreatedAt { get; set; }
+        public string CreatedAt { get; set; }
 
         public List<InvoiceDetailViewModel> Details { get; set; }
     }

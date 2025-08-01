@@ -150,3 +150,9 @@ D:\TongHopWeb\Hospital(ASP.NET CORE MVC)\Hospital\Hospital\obj\Debug\net6.0\refi
 D:\TongHopWeb\Hospital(ASP.NET CORE MVC)\Hospital\Hospital\obj\Debug\net6.0\Hospital.pdb
 D:\TongHopWeb\Hospital(ASP.NET CORE MVC)\Hospital\Hospital\obj\Debug\net6.0\Hospital.genruntimeconfig.cache
 D:\TongHopWeb\Hospital(ASP.NET CORE MVC)\Hospital\Hospital\obj\Debug\net6.0\ref\Hospital.dll
+D:\TongHopWeb\Hospital(ASP.NET CORE MVC)\Hospital\Hospital\obj\Debug\net6.0\Hospital.sourcelink.json
+D:\TongHopWeb\Hospital(ASP.NET CORE MVC)\Hospital\Hospital\obj\Debug\net6.0\Hospital.MvcApplicationPartsAssemblyInfo.cs
+D:\TongHopWeb\Hospital(ASP.NET CORE MVC)\Hospital\Hospital\bin\Debug\net6.0\PagedList.Core.dll
+D:\TongHopWeb\Hospital(ASP.NET CORE MVC)\Hospital\Hospital\bin\Debug\net6.0\PagedList.Core.Mvc.dll
+D:\TongHopWeb\Hospital(ASP.NET CORE MVC)\Hospital\Hospital\bin\Debug\net6.0\X.PagedList.dll
+D:\TongHopWeb\Hospital(ASP.NET CORE MVC)\Hospital\Hospital\bin\Debug\net6.0\X.PagedList.Mvc.Core.dll

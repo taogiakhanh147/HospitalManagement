@@ -7969,6 +7969,10 @@
       "PackagePath": "staticwebassets\\css\\site.css"
     },
     {
+      "Id": "D:\\TongHopWeb\\Hospital(ASP.NET CORE MVC)\\Hospital\\Hospital\\wwwroot\\data\\PaymentMethod.json",
+      "PackagePath": "staticwebassets\\data\\PaymentMethod.json"
+    },
+    {
       "Id": "D:\\TongHopWeb\\Hospital(ASP.NET CORE MVC)\\Hospital\\Hospital\\wwwroot\\favicon.ico",
       "PackagePath": "staticwebassets\\favicon.ico"
     },

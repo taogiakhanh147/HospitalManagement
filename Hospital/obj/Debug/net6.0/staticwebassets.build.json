@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "8PLiHfCYk6cS4PTQwlN0zlStFLr+7zjYO4QGgwB/3uE=",
+  "Hash": "fmmAtdA7baKAMdYvD29bUpzpYrz6xfDjEFrJ8QqNcWk=",
   "Source": "Hospital",
   "BasePath": "_content/Hospital",
   "Mode": "Default",
@@ -37521,6 +37521,25 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\css\\site.css"
+    },
+    {
+      "Identity": "D:\\TongHopWeb\\Hospital(ASP.NET CORE MVC)\\Hospital\\Hospital\\wwwroot\\data\\PaymentMethod.json",
+      "SourceId": "Hospital",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\TongHopWeb\\Hospital(ASP.NET CORE MVC)\\Hospital\\Hospital\\wwwroot\\",
+      "BasePath": "_content/Hospital",
+      "RelativePath": "data/PaymentMethod.json",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\data\\PaymentMethod.json"
     },
     {
       "Identity": "D:\\TongHopWeb\\Hospital(ASP.NET CORE MVC)\\Hospital\\Hospital\\wwwroot\\favicon.ico",

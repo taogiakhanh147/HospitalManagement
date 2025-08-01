@@ -1,0 +1,14 @@
+[
+  {
+    "PaymentMethodId": 3,
+    "PaymentMethodName": "Tiền mặt"
+  },
+  {
+    "PaymentMethodId": 4,
+    "PaymentMethodName": "Chuyển khoản"
+  },
+  {
+    "PaymentMethodId": 5,
+    "PaymentMethodName": "Thẻ BHYT"
+  }
+]

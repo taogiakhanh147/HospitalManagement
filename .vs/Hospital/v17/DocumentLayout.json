@@ -3,20 +3,40 @@
   "WorkspaceRootPath": "D:\\TongHopWeb\\Hospital(ASP.NET CORE MVC)\\Hospital\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{ED4E2E97-557E-424F-86B7-1B254B63F47C}|Hospital\\Hospital.csproj|d:\\tonghopweb\\hospital(asp.net core mvc)\\hospital\\hospital\\models\\invoice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{ED4E2E97-557E-424F-86B7-1B254B63F47C}|Hospital\\Hospital.csproj|solutionrelative:hospital\\models\\invoice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{ED4E2E97-557E-424F-86B7-1B254B63F47C}|Hospital\\Hospital.csproj|d:\\tonghopweb\\hospital(asp.net core mvc)\\hospital\\hospital\\models\\viewmodels\\invoicedetailviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{ED4E2E97-557E-424F-86B7-1B254B63F47C}|Hospital\\Hospital.csproj|solutionrelative:hospital\\models\\viewmodels\\invoicedetailviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{ED4E2E97-557E-424F-86B7-1B254B63F47C}|Hospital\\Hospital.csproj|d:\\tonghopweb\\hospital(asp.net core mvc)\\hospital\\hospital\\views\\invoice\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{ED4E2E97-557E-424F-86B7-1B254B63F47C}|Hospital\\Hospital.csproj|solutionrelative:hospital\\views\\invoice\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{ED4E2E97-557E-424F-86B7-1B254B63F47C}|Hospital\\Hospital.csproj|d:\\tonghopweb\\hospital(asp.net core mvc)\\hospital\\hospital\\controllers\\invoicecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{ED4E2E97-557E-424F-86B7-1B254B63F47C}|Hospital\\Hospital.csproj|solutionrelative:hospital\\controllers\\invoicecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{ED4E2E97-557E-424F-86B7-1B254B63F47C}|Hospital\\Hospital.csproj|d:\\tonghopweb\\hospital(asp.net core mvc)\\hospital\\hospital\\models\\viewmodels\\invoiceviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{ED4E2E97-557E-424F-86B7-1B254B63F47C}|Hospital\\Hospital.csproj|solutionrelative:hospital\\models\\viewmodels\\invoiceviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{ED4E2E97-557E-424F-86B7-1B254B63F47C}|Hospital\\Hospital.csproj|d:\\tonghopweb\\hospital(asp.net core mvc)\\hospital\\hospital\\controllers\\invoicecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{ED4E2E97-557E-424F-86B7-1B254B63F47C}|Hospital\\Hospital.csproj|solutionrelative:hospital\\controllers\\invoicecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{ED4E2E97-557E-424F-86B7-1B254B63F47C}|Hospital\\Hospital.csproj|d:\\tonghopweb\\hospital(asp.net core mvc)\\hospital\\hospital\\views\\invoice\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{ED4E2E97-557E-424F-86B7-1B254B63F47C}|Hospital\\Hospital.csproj|solutionrelative:hospital\\views\\invoice\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{ED4E2E97-557E-424F-86B7-1B254B63F47C}|Hospital\\Hospital.csproj|d:\\tonghopweb\\hospital(asp.net core mvc)\\hospital\\hospital\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{ED4E2E97-557E-424F-86B7-1B254B63F47C}|Hospital\\Hospital.csproj|solutionrelative:hospital\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{ED4E2E97-557E-424F-86B7-1B254B63F47C}|Hospital\\Hospital.csproj|d:\\tonghopweb\\hospital(asp.net core mvc)\\hospital\\hospital\\models\\invoice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{ED4E2E97-557E-424F-86B7-1B254B63F47C}|Hospital\\Hospital.csproj|solutionrelative:hospital\\models\\invoice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{ED4E2E97-557E-424F-86B7-1B254B63F47C}|Hospital\\Hospital.csproj|d:\\tonghopweb\\hospital(asp.net core mvc)\\hospital\\hospital\\models\\invoicedetail.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{ED4E2E97-557E-424F-86B7-1B254B63F47C}|Hospital\\Hospital.csproj|solutionrelative:hospital\\models\\invoicedetail.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{ED4E2E97-557E-424F-86B7-1B254B63F47C}|Hospital\\Hospital.csproj|d:\\tonghopweb\\hospital(asp.net core mvc)\\hospital\\hospital\\models\\viewmodels\\invoiceindexviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{ED4E2E97-557E-424F-86B7-1B254B63F47C}|Hospital\\Hospital.csproj|solutionrelative:hospital\\models\\viewmodels\\invoiceindexviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{ED4E2E97-557E-424F-86B7-1B254B63F47C}|Hospital\\Hospital.csproj|d:\\tonghopweb\\hospital(asp.net core mvc)\\hospital\\hospital\\views\\shared\\_partialsidebar.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{ED4E2E97-557E-424F-86B7-1B254B63F47C}|Hospital\\Hospital.csproj|solutionrelative:hospital\\views\\shared\\_partialsidebar.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     }
   ],
   "DocumentGroupContainers": [
@@ -26,42 +46,108 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 2,
+          "SelectedChildIndex": 4,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 7,
+              "Title": "InvoiceIndexViewModel.cs",
+              "DocumentMoniker": "D:\\TongHopWeb\\Hospital(ASP.NET CORE MVC)\\Hospital\\Hospital\\Models\\ViewModels\\InvoiceIndexViewModel.cs",
+              "RelativeDocumentMoniker": "Hospital\\Models\\ViewModels\\InvoiceIndexViewModel.cs",
+              "ToolTip": "D:\\TongHopWeb\\Hospital(ASP.NET CORE MVC)\\Hospital\\Hospital\\Models\\ViewModels\\InvoiceIndexViewModel.cs",
+              "RelativeToolTip": "Hospital\\Models\\ViewModels\\InvoiceIndexViewModel.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAASAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-01T05:00:56.208Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "_PartialSideBar.cshtml",
+              "DocumentMoniker": "D:\\TongHopWeb\\Hospital(ASP.NET CORE MVC)\\Hospital\\Hospital\\Views\\Shared\\_PartialSideBar.cshtml",
+              "RelativeDocumentMoniker": "Hospital\\Views\\Shared\\_PartialSideBar.cshtml",
+              "ToolTip": "D:\\TongHopWeb\\Hospital(ASP.NET CORE MVC)\\Hospital\\Hospital\\Views\\Shared\\_PartialSideBar.cshtml",
+              "RelativeToolTip": "Hospital\\Views\\Shared\\_PartialSideBar.cshtml",
+              "ViewState": "AQIAAAMAAAAAAAAAAAAAABwAAAA/AAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-07-31T16:39:36.967Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "_Layout.cshtml",
+              "DocumentMoniker": "D:\\TongHopWeb\\Hospital(ASP.NET CORE MVC)\\Hospital\\Hospital\\Views\\Shared\\_Layout.cshtml",
+              "RelativeDocumentMoniker": "Hospital\\Views\\Shared\\_Layout.cshtml",
+              "ToolTip": "D:\\TongHopWeb\\Hospital(ASP.NET CORE MVC)\\Hospital\\Hospital\\Views\\Shared\\_Layout.cshtml",
+              "RelativeToolTip": "Hospital\\Views\\Shared\\_Layout.cshtml",
+              "ViewState": "AQIAAA8AAAAAAAAAAAAAACkAAAAgAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-07-31T16:37:41.345Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "InvoiceDetail.cs",
+              "DocumentMoniker": "D:\\TongHopWeb\\Hospital(ASP.NET CORE MVC)\\Hospital\\Hospital\\Models\\InvoiceDetail.cs",
+              "RelativeDocumentMoniker": "Hospital\\Models\\InvoiceDetail.cs",
+              "ToolTip": "D:\\TongHopWeb\\Hospital(ASP.NET CORE MVC)\\Hospital\\Hospital\\Models\\InvoiceDetail.cs",
+              "RelativeToolTip": "Hospital\\Models\\InvoiceDetail.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAABAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-31T02:33:17.904Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "InvoiceDetailViewModel.cs",
+              "DocumentMoniker": "D:\\TongHopWeb\\Hospital(ASP.NET CORE MVC)\\Hospital\\Hospital\\Models\\ViewModels\\InvoiceDetailViewModel.cs",
+              "RelativeDocumentMoniker": "Hospital\\Models\\ViewModels\\InvoiceDetailViewModel.cs",
+              "ToolTip": "D:\\TongHopWeb\\Hospital(ASP.NET CORE MVC)\\Hospital\\Hospital\\Models\\ViewModels\\InvoiceDetailViewModel.cs",
+              "RelativeToolTip": "Hospital\\Models\\ViewModels\\InvoiceDetailViewModel.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAkAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-31T02:10:56.752Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
               "Title": "InvoiceController.cs",
               "DocumentMoniker": "D:\\TongHopWeb\\Hospital(ASP.NET CORE MVC)\\Hospital\\Hospital\\Controllers\\InvoiceController.cs",
               "RelativeDocumentMoniker": "Hospital\\Controllers\\InvoiceController.cs",
               "ToolTip": "D:\\TongHopWeb\\Hospital(ASP.NET CORE MVC)\\Hospital\\Hospital\\Controllers\\InvoiceController.cs",
               "RelativeToolTip": "Hospital\\Controllers\\InvoiceController.cs",
-              "ViewState": "AQIAABUAAAAAAAAAAAAywCkAAAAkAAAA",
+              "ViewState": "AQIAAG4AAAAAAAAAAAAAAHMAAAApAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-29T14:19:32.278Z"
+              "WhenOpened": "2025-07-29T14:19:32.278Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 3,
               "Title": "Index.cshtml",
               "DocumentMoniker": "D:\\TongHopWeb\\Hospital(ASP.NET CORE MVC)\\Hospital\\Hospital\\Views\\Invoice\\Index.cshtml",
               "RelativeDocumentMoniker": "Hospital\\Views\\Invoice\\Index.cshtml",
               "ToolTip": "D:\\TongHopWeb\\Hospital(ASP.NET CORE MVC)\\Hospital\\Hospital\\Views\\Invoice\\Index.cshtml",
               "RelativeToolTip": "Hospital\\Views\\Invoice\\Index.cshtml",
-              "ViewState": "AQIAAPEAAAAAAAAAAAAAAO4AAAASAAAA",
+              "ViewState": "AQIAAHQAAAAAAAAAAAAewIYAAAArAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
               "WhenOpened": "2025-07-29T15:13:52.786Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 5,
               "Title": "Invoice.cs",
               "DocumentMoniker": "D:\\TongHopWeb\\Hospital(ASP.NET CORE MVC)\\Hospital\\Hospital\\Models\\Invoice.cs",
               "RelativeDocumentMoniker": "Hospital\\Models\\Invoice.cs",
               "ToolTip": "D:\\TongHopWeb\\Hospital(ASP.NET CORE MVC)\\Hospital\\Hospital\\Models\\Invoice.cs",
               "RelativeToolTip": "Hospital\\Models\\Invoice.cs",
-              "ViewState": "AQIAAAwAAAAAAAAAAIBAwBIAAAAxAAAA",
+              "ViewState": "AQIAAAkAAAAAAAAAAAAAAA0AAAArAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-07-29T14:31:58.456Z",
               "EditorCaption": ""
@@ -74,9 +160,10 @@
               "RelativeDocumentMoniker": "Hospital\\Models\\ViewModels\\InvoiceViewModel.cs",
               "ToolTip": "D:\\TongHopWeb\\Hospital(ASP.NET CORE MVC)\\Hospital\\Hospital\\Models\\ViewModels\\InvoiceViewModel.cs",
               "RelativeToolTip": "Hospital\\Models\\ViewModels\\InvoiceViewModel.cs",
-              "ViewState": "AQIAAAcAAAAAAAAAAAA7wBcAAAApAAAA",
+              "ViewState": "AQIAAAYAAAAAAAAAAIBAwBAAAAAvAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-29T14:23:38.374Z"
+              "WhenOpened": "2025-07-29T14:23:38.374Z",
+              "EditorCaption": ""
             }
           ]
         }

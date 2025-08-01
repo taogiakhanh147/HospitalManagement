@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace Hospital.Models
 {
@@ -13,6 +14,7 @@ namespace Hospital.Models
         public int PaymentMethodId { get; set; }
         public string? PaymentMethodName { get; set; }
 
+        [JsonIgnore]
         public virtual ICollection<Invoice> Invoices { get; set; }
     }
 }
