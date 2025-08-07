@@ -1,0 +1,106 @@
+﻿@using X.PagedList
+@using X.PagedList.Mvc.Core
+@model IPagedList<Hospital.Models.ViewModels.InvoiceViewModel>
+@{
+    var pageSize = ViewBag.PageSize;
+}
+<div class="mb-3">
+    <a href="@Url.Action("ExportExcel")" class="btn btn-success">Xuất Excel</a>
+    <a href="@Url.Action("ExportInvoiceReportPdf")" class="btn btn-danger">Xuất PDF</a>
+</div>
+<h4>Danh sách hóa đơn hoạt động</h4>
+<table id="invoiceTable" class="table table-bordered table-striped table-hover">
+    <thead class="custom-header">
+        <tr>
+            <th class="text-center">Bệnh nhân</th>
+            <th class="text-center">Thu ngân</th>
+            <th class="text-center">Chẩn đoán</th>
+            <th class="text-center">Phương thức thanh toán</th>
+            <th class="text-center">Trạng thái</th>
+            <th class="text-center">Tổng tiền</th>
+            <th class="text-center">Ngày tạo</th>
+            <th class="text-center">Tùy chọn</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td class="text-left">@item.PatientName</td>
+                <td class="text-left">@item.CashierName</td>
+                <td class="text-left">@item.DiagnosisName</td>
+                <td class="text-left">@item.PaymentMethodName</td>
+                <td class="text-left">@item.StatusName</td>
+                <td class="text-right">@item.TotalAmount.ToString("N0")</td>
+                <td class="text-center">@item.CreatedAt.ToString("dd-MM-yyyy")</td>
+                <td class="text-center">
+                    <button type="button"
+                            class="btn btn-sm btn-warning"
+                            title="Sửa"
+                            onclick="editInvoice(
+                                '@item.InvoiceId',
+                                '@item.PatientId',
+                                '@item.DoctorId',
+                                '@item.CashierId',
+                                '@item.PharmacistId',
+                                '@item.DiagnosisId',
+                                '@item.PaymentMethodId',
+                                '@item.StatusId',
+                                '@item.TotalAmount',
+                                '@item.Notes',
+                                '@item.CreatedAt.ToString("yyyy-MM-ddTHH:mm:ss")')">
+                        <i class="fa fa-edit"></i>
+                    </button>
+                        <input type="hidden" name="invoiceId" value="@item.InvoiceId" />
+                            <button 
+                                type="submit" 
+                                class="btn btn-sm btn-danger delete-invoice" 
+                                data-id="@item.InvoiceId"
+                                title="Xóa"
+                            >
+                                <i class="fa fa-trash"></i>
+                            </button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<div class="row align-items-center mt-3">
+    <div class="col-md-6">
+        <div class="d-inline-block">
+            <select id="activePageSizeSelect" class="form-control d-inline-block w-auto ml-2">
+                @{
+                    var pageSizes = new[] { 5, 10, 15, 20 };
+                    foreach (var size in pageSizes)
+                    {
+                        if (pageSize == size)
+                        {
+                            <option value="@size" selected>@size</option>
+                        }
+                        else
+                        {
+                            <option value="@size">@size</option>
+                        }
+                    }
+                }
+            </select>
+        </div>
+    </div>
+    <!-- Pagination bên phải -->
+    <div class="col-md-6 text-right">
+        @Html.PagedListPager(Model, page =>
+                 Url.Action("PartialInvoiceTable", new
+                 {
+                     page,
+                     pageSize = ViewBag.PageSize,
+                     patientId = ViewBag.PatientId // giữ lại filter khi bấm chuyển trang
+                 }),
+                 new PagedListRenderOptions
+        {
+            Display = PagedListDisplayMode.Always,
+            UlElementClasses = new[] { "pagination", "justify-content-end", "mb-0" },
+            LiElementClasses = new[] { "page-item" },
+            PageClasses = new[] { "page-link ajax-page-link" }
+        })
+    </div>
+</div>

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Hospital.Models.ViewModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
@@ -25,6 +26,8 @@ namespace Hospital.Models
         public virtual DbSet<PaymentMethod> PaymentMethods { get; set; } = null!;
         public virtual DbSet<Role> Roles { get; set; } = null!;
         public virtual DbSet<staff> staff { get; set; } = null!;
+        public virtual DbSet<InvoiceViewModel> ActiveInvoiceReports { get; set; } = null!;
+
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -155,6 +158,12 @@ namespace Hospital.Models
                     .WithMany(p => p.staff)
                     .HasForeignKey(d => d.RoleId)
                     .HasConstraintName("FK__Staff__RoleId__286302EC");
+            });
+
+            modelBuilder.Entity<InvoiceViewModel>(entity =>
+            {
+                entity.HasNoKey();
+                entity.ToView(null);
             });
 
             OnModelCreatingPartial(modelBuilder);

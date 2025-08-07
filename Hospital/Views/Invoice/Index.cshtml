@@ -3,15 +3,15 @@
 @model IPagedList<Hospital.Models.ViewModels.InvoiceViewModel>
 @{
     ViewData["Title"] = "Danh sách hóa đơn";
-    var patients = ViewBag.Patients as List<Patient>;
-    var doctors = ViewBag.Doctors as List<staff>;
-    var cashiers = ViewBag.Cashiers as List<staff>;
-    var pharmacists = ViewBag.Pharmacists as List<staff>;
-    var diagnosis = ViewBag.Diagnosis as List<Diagnosis>;
-    var methods = ViewBag.Methods as List<PaymentMethod>;
-    var items = ViewBag.Items as List<Item>;
-    var status = ViewBag.Status as List<InvoiceStatus>;
-    var invoices = ViewBag.Invoices as List<Invoice>;
+    var patients = ViewBag.Patients;
+    var doctors = ViewBag.Doctors;
+    var cashiers = ViewBag.Cashiers;
+    var pharmacists = ViewBag.Pharmacists;
+    var diagnosis = ViewBag.Diagnosis;
+    var methods = ViewBag.Methods;
+    var items = ViewBag.Items;
+    var status = ViewBag.Status;
+    var pageSize = ViewBag.PageSize;
 }
 
 @section naviheader {
@@ -30,76 +30,157 @@
 }
 
 <section class="invoice-wrapper">
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            @TempData["SuccessMessage"]
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+        </div>
+    }
+
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            @TempData["ErrorMessage"]
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+        </div>
+    }
     <!-- PHẦN 1: Tạo/Sửa hóa đơn -->
     <div class="invoice-box">
         <h4>Hóa đơn</h4>
-        <form asp-action="Save" method="post" class="mb-4">
+        <form asp-action="Save" method="post" id="invoiceForm" class="mb-4" autocomplete="off">
             <input type="hidden" name="InvoiceId" id="InvoiceId" />
             <div class="row">
                 @* Bệnh nhân *@
                 <div class="col-md-6 mb-2">
-                    <label>Bệnh nhân</label>
-                    <select name="PatientId" class="form-control">
-                        <option disabled selected>Chọn...</option>
+                    <label for="PatientId">Bệnh nhân</label>
+                    <select id="PatientId"
+                            class="tom-select"
+                            name="PatientId"
+                            data-placeholder="Chọn bệnh nhân..."
+                            style="width:100%;">
+                        <option value="">Chọn bệnh nhân...</option>
                         @foreach (var p in patients)
                         {
-                            <option value="@p.PatientId">
+                            var fullName = ((string)p.FullName).ToLower();
+                            var initials = string.Join("", ((string)p.FullName)
+                            .Split(' ', StringSplitOptions.RemoveEmptyEntries)
+                            .Select(x => x[0]))
+                            .ToLower();
+
+                            <option value="@p.PatientId" data-search="@($"{fullName} {initials}")">
                                 @p.FullName
                             </option>
                         }
                     </select>
+                    <div id="PatientId-error" class="text-danger d-none">
+                        Vui lòng chọn bệnh nhân.
+                    </div>
                 </div>
+
                 @* Bác sĩ *@
                 <div class="col-md-6 mb-2">
                     <label>Bác sĩ</label>
-                    <select name="DoctorId" class="form-control">
-                        <option disabled selected>Chọn...</option>
-                        @foreach (var d in doctors)
+                    <select id="DoctorId"
+                            class="tom-select"
+                            name="DoctorId"
+                            data-placeholder="Chọn bác sĩ..."
+                            style="width:100%;">
+                        <option></option>
+                        @foreach (var p in doctors)
                         {
-                            <option value="@d.StaffId">
-                                @d.FullName
+                            var fullName = ((string)p.FullName).ToLower();
+                            var initials = string.Join("", ((string)p.FullName)
+                            .Split(' ', StringSplitOptions.RemoveEmptyEntries)
+                            .Select(x => x[0]))
+                            .ToLower();
+
+                            <option value="@p.StaffId" data-search="@($"{fullName} {initials}")">
+                                @p.FullName
                             </option>
                         }
                     </select>
+                    <div id="DoctorId-error" class="text-danger d-none">
+                        Vui lòng chọn bác sĩ.
+                    </div>
                 </div>
                 @* Thu ngân *@
                 <div class="col-md-6 mb-2">
                     <label>Thu ngân</label>
-                    <select name="CashierId" class="form-control">
-                        <option disabled selected>Chọn...</option>
-                        @foreach (var c in cashiers)
+                    <select id="CashierId"
+                            name="CashierId"
+                            class="tom-select"
+                            data-placeholder="Chọn thu ngân..."
+                            style="width:100%;">
+                        <option></option>
+                        @foreach (var p in cashiers)
                         {
-                            <option value="@c.StaffId">
-                                @c.FullName
+                            var fullName = ((string)p.FullName).ToLower();
+                            var initials = string.Join("", ((string)p.FullName)
+                            .Split(' ', StringSplitOptions.RemoveEmptyEntries)
+                            .Select(x => x[0]))
+                            .ToLower();
+
+                            <option value="@p.StaffId" data-search="@($"{fullName} {initials}")">
+                                @p.FullName
                             </option>
                         }
                     </select>
+                    <div id="CashierId-error" class="text-danger d-none">
+                        Vui lòng chọn bác sĩ.
+                    </div>
                 </div>
                 @* Dược sĩ *@
                 <div class="col-md-6 mb-2">
                     <label>Dược sĩ</label>
-                    <select name="PharmacistId" class="form-control">
-                        <option disabled selected>Chọn...</option>
-                        @foreach (var ph in pharmacists)
+                    <select id="PharmacistId" 
+                            name="PharmacistId" 
+                            class="tom-select" 
+                            data-placeholder="Chọn dược sĩ..."
+                            style="width:100%;">
+                        <option></option>
+                        @foreach (var p in pharmacists)
                         {
-                            <option value="@ph.StaffId">
-                                @ph.FullName
+                            var fullName = ((string)p.FullName).ToLower();
+                            var initials = string.Join("", ((string)p.FullName)
+                            .Split(' ', StringSplitOptions.RemoveEmptyEntries)
+                            .Select(x => x[0]))
+                            .ToLower();
+
+                            <option value="@p.StaffId" data-search="@($"{fullName} {initials}")">
+                                @p.FullName
                             </option>
                         }
                     </select>
+                    <div id="PharmacistId-error" class="text-danger d-none">
+                        Vui lòng chọn bác sĩ.
+                    </div>
                 </div>
                 @* Chẩn đoán *@
                 <div class="col-md-6 mb-2">
                     <label>Chẩn đoán</label>
-                    <select name="DiagnosisId" class="form-control">
-                        <option disabled selected>Chọn...</option>
-                        @foreach (var di in diagnosis)
+                    <select id="DiagnosisId"
+                            name="DiagnosisId"
+                            class="tom-select"
+                            data-placeholder="Chọn chẩn đoán..."
+                            style="width:100%;">
+                        <option></option>
+                        @foreach (var p in diagnosis)
                         {
-                            <option value="@di.DiagnosisId">
-                                @di.DiagnosisName
+                            var fullName = ((string)p.DiagnosisName).ToLower();
+                            var initials = string.Join("", ((string)p.DiagnosisName)
+                            .Split(' ', StringSplitOptions.RemoveEmptyEntries)
+                            .Select(x => x[0]))
+                            .ToLower();
+
+                            <option value="@p.DiagnosisId" data-search="@($"{fullName} {initials}")">
+                                @p.DiagnosisName
                             </option>
                         }
                     </select>
+                    <div id="DiagnosisId-error" class="text-danger d-none">
+                        Vui lòng chọn chẩn đoán.
+                    </div>
                 </div>
                 @* Ghi chú *@
                 <div class="col-md-6 mb-2">
@@ -109,24 +190,42 @@
                 @* Phương thức thanh toán *@
                 <div class="col-md-6 mb-2">
                     <label>Phương thức thanh toán</label>
-                    <select id="paymentMethodDropdown" name="PaymentMethodId" class="form-control">
+                    <select id="PaymentMethodId"
+                            name="PaymentMethodId"
+                            style="width:100%;">
                         <option value="">-- Chọn phương thức thanh toán --</option>
                     </select>
+                    <div id="PaymentMethodId-error" class="text-danger d-none">
+                        Vui lòng chọn phương thức thanh toán.
+                    </div>
                 </div>
                 @* Tổng tiền *@
                 <div class="col-md-6 mb-2">
                     <label>Tổng tiền</label>
-                    <input type="text" name="TotalAmount" id="TotalAmount" class="form-control" />
+                    <input type="text" name="TotalAmount" id="TotalAmount" class="form-control format-number" />
+                    <div id="TotalAmount-error" class="text-danger d-none">
+                        Vui lòng điền tổng tiền.
+                    </div>
                 </div>
                 @* Trạng thái *@
                 <div class="col-md-6 mb-2">
                     <label>Trạng thái</label>
-                    <select name="StatusId" class="form-control">
-                        <option disabled selected>Chọn...</option>
-                        @foreach (var s in status)
+                    <select id="StatusId"
+                            name="StatusId"
+                            class="tom-select"
+                            data-placeholder="Chọn trạng thái..."
+                            style="width:100%;">
+                        <option></option>
+                        @foreach (var p in status)
                         {
-                            <option value="@s.StatusId">
-                                @s.StatusName
+                            var fullName = ((string)p.StatusName).ToLower();
+                            var initials = string.Join("", ((string)p.StatusName)
+                            .Split(' ', StringSplitOptions.RemoveEmptyEntries)
+                            .Select(x => x[0]))
+                            .ToLower();
+
+                            <option value="@p.StatusId" data-search="@($"{fullName} {initials}")">
+                                @p.StatusName
                             </option>
                         }
                     </select>
@@ -147,9 +246,11 @@
                             <i class="bi bi-calendar"></i>
                         </span>
                     </div>
+                    <small id="CreatedAtError" class="text-danger d-none">Vui lòng nhập theo định dạng dd-mm-yyyy</small>
                 </div>
             </div>
             <hr/>
+
             @* Chi tiết hóa đơn *@
             <h4>Chi tiết hóa đơn</h4>
             <div id="invoiceDetailContainer">
@@ -157,16 +258,24 @@
                     <input type="hidden" name="InvoiceDetails[0].InvoiceDetailId" value="0" />
                     <div class="col-md-6">
                         <label>Dịch vụ / thuốc</label>
-                        <select name="InvoiceDetails[0].ItemId" class="form-control">
+                        <select 
+                            name="InvoiceDetails[0].ItemId" 
+                            class="tom-select">
+                            <option></option>
                             @foreach (var i in items)
                             {
-                                <option value="@i.ItemId">@i.ItemName</option>
+                                var fullName = ((string)i.ItemName).ToLower();
+                                var initials = string.Join("", ((string)i.ItemName)
+                                .Split(' ', StringSplitOptions.RemoveEmptyEntries)
+                                .Select(x => x[0]))
+                                .ToLower();
+                                <option value="@i.ItemId" data-search="@($"{fullName} {initials}")">@i.ItemName</option>
                             }
                         </select>
                     </div>
                     <div class="col-md-4">
                         <label>Số lượng</label>
-                        <input type="number" name="InvoiceDetails[0].Quantity" class="form-control" min="1" />
+                        <input type="text" name="InvoiceDetails[0].Quantity" class="form-control format-number" min="1" />
                     </div>
                     <div class="col-md-2 d-flex align-items-end">
                         <button type="button" class="btn btn-danger remove-detail">
@@ -194,7 +303,7 @@
                 <a class="nav-link active" data-toggle="tab" href="#active-invoices">Hóa đơn hoạt động</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" data-toggle="tab" href="#inactive-invoices">Hóa đơn đã vô hiệu</a>
+                <a class="nav-link" id="inactive-tab" data-toggle="tab" href="#inactive-invoices">Hóa đơn đã vô hiệu</a>
             </li>
         </ul>
 
@@ -202,7 +311,7 @@
             @* Bảng hóa đơn hoạt đông *@
             <div class="tab-pane fade show active" id="active-invoices">
                 <div class="input-group mb-3" style="max-width: 400px;">
-                    <input type="text" id="invoiceSearchInput" class="form-control" placeholder="Tìm kiếm thông tin">
+                    <input type="text" id="invoiceSearchInput" class="form-control" placeholder="Tìm kiếm thông tin" autocomplete="off">
                     <div class="input-group-append">
                         <button id="invoiceSearchBtn" class="btn btn-outline-primary" type="button">
                             <i class="fas fa-search"></i>
@@ -211,77 +320,32 @@
                 </div>
                 <div class="row mb-3">
                     <div class="col-md-4">
-                        <select id="patientFilter" class="form-control">
-                            <option value="">-- Lọc theo bệnh nhân --</option>
+                        <label for="patientFilter">Lọc theo bệnh nhân</label>
+                        <select id="patientFilter"
+                                class="tom-select"
+                                data-placeholder="Lọc theo bệnh nhân..."
+                                style="width: 100%;">
+                            <option></option>
                             @foreach (var p in patients)
                             {
-                                <option value="@p.FullName">@p.FullName</option>
+                                var fullName = ((string)p.FullName).ToLower();
+                                var initials = string.Join("", ((string)p.FullName)
+                                .Split(' ', StringSplitOptions.RemoveEmptyEntries)
+                                .Select(x => x[0]))
+                                .ToLower();
+
+                                <option value="@p.PatientId" data-search="@($"{fullName} {initials}")">
+                                    @p.FullName
+                                </option>
                             }
                         </select>
                     </div>
                 </div>
-                <h4>Danh sách hóa đơn hoạt động</h4>
-                <table id="invoiceTable" class="table table-bordered table-striped table-hover">
-                    <thead class="custom-header">
-                        <tr>
-                            <th class="text-center">Bệnh nhân</th>
-                            <th class="text-center">Thu ngân</th>
-                            <th class="text-center">Chẩn đoán</th>
-                            <th class="text-center">Phương thức thanh toán</th>
-                            <th class="text-center">Trạng thái</th>
-                            <th class="text-center">Tổng tiền</th>
-                            <th class="text-center">Ngày tạo</th>
-                            <th class="text-center">Tùy chọn</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var item in Model)
-                        {
-                            <tr>
-                                <td class="text-left">@item.PatientName</td>
-                                <td class="text-left">@item.CashierName</td>
-                                <td class="text-left">@item.DiagnosisName</td>
-                                <td class="text-left">@item.PaymentMethodName</td>
-                                <td class="text-left">@item.StatusName</td>
-                                <td class="text-right">@item.TotalAmount.ToString("N0")</td>
-                                <td class="text-center">@item.CreatedAt.ToString("dd-MM-yyyy")</td>
-                                <td class="text-center">
-                                    <button type="button"
-                                            class="btn btn-sm btn-warning"
-                                            title="Sửa"
-                                            onclick="editInvoice(
-                            '@item.InvoiceId',
-                            '@item.PatientId',
-                            '@item.DoctorId',
-                            '@item.CashierId',
-                            '@item.PharmacistId',
-                            '@item.DiagnosisId',
-                            '@item.PaymentMethodId',
-                            '@item.StatusId',
-                            '@item.TotalAmount',
-                            '@item.Notes',
-                            '@item.CreatedAt.ToString("yyyy-MM-ddTHH:mm:ss")')">
-                                        <i class="fa fa-edit"></i>
-                                    </button>
-                                    <form asp-action="Remove" method="Post" style="display: inline">
-                                        <input type="hidden" name="invoiceId" value="@item.InvoiceId" />
-                                        <button type="submit" class="btn btn-sm btn-danger" title="Xóa">
-                                            <i class="fa fa-trash"></i>
-                                        </button>
-                                    </form>
-                                </td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
-                @Html.PagedListPager(Model, page => Url.Action("Index", new { page }), new PagedListRenderOptions
-           {
-               Display = PagedListDisplayMode.Always,
-               UlElementClasses = new[] { "pagination", "justify-content-end" },
-               LiElementClasses = new[] { "page-item" },
-               PageClasses = new[] { "page-link" }
-           })
+                <div id="invoiceTableContainer">
+                    @Html.Partial("_PartialInvoiceTable", Model)
+                </div>
             </div>
+            @* Bảng hóa đơn vô hiệu *@
             <div class="tab-pane fade" id="inactive-invoices">
                 <div class="input-group mb-3" style="max-width: 400px;">
                     <input type="text" id="inactiveInvoiceSearchInput" class="form-control" placeholder="Tìm kiếm thông tin">
@@ -302,66 +366,95 @@
                         </select>
                     </div>
                 </div>
-                <h4>Danh sách hóa đơn vô hiệu</h4>
-                <table id="inactiveInvoiceTable" class="table table-bordered table-striped table-hover">
-                    <thead class="custom-header">
-                        <tr>
-                            <th>Bệnh nhân</th>
-                            <th>Thu ngân</th>
-                            <th>Chẩn đoán</th>
-                            <th>Phương thức</th>
-                            <th>Trạng thái</th>
-                            <th>Tổng tiền</th>
-                            <th>Ngày tạo</th>
-                            <th>Tuỳ chọn</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var item in Model)
-                        {
-                            <tr>
-                                <td class="text-left">@item.PatientName</td>
-                                <td class="text-left">@item.CashierName</td>
-                                <td class="text-left">@item.DiagnosisName</td>
-                                <td class="text-left">@item.PaymentMethodName</td>
-                                <td class="text-left">@item.StatusName</td>
-                                <td class="text-right">@item.TotalAmount.ToString("N0")</td>
-                                <td class="text-center">@item.CreatedAt.ToString("dd-MM-yyyy")</td>
-                                <td class="text-center">
-                                    <form asp-action="Restore" method="Post" style="display: inline">
-                                        <input type="hidden" name="invoiceId" value="@item.InvoiceId" />
-                                        <button type="submit" class="btn btn-sm btn-danger" title="Xóa">
-                                            <i class="fa fa-undo"></i>
-                                        </button>
-                                    </form>
-                                </td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
-                @Html.PagedListPager(Model, page => Url.Action("Index", new { page }), new PagedListRenderOptions
-           {
-               Display = PagedListDisplayMode.Always,
-               UlElementClasses = new[] { "pagination", "justify-content-end" },
-               LiElementClasses = new[] { "page-item" },
-               PageClasses = new[] { "page-link" }
-           })
+                <div id="inactive-invoice-container">
+                    <div class="text-center text-muted mt-3">Đang tải...</div>
+                </div>
             </div>
         </div>
     </div>
 </section>
 
 @section Scripts {
+    @* Search dropdownlist *@
+    <script>
+        function removeDiacritics(str) {
+            return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+        }
+
+        document.querySelectorAll('.tom-select').forEach(el => {
+            new TomSelect(el, {
+                create: false,
+                placeholder: el.getAttribute('data-placeholder') || 'Chọn...',
+                sortField: {
+                    field: "text",
+                    direction: "asc"
+                },
+                score: function (search) {
+                    const term = removeDiacritics(search.toLowerCase().trim());
+                    return function (item) {
+                        const searchData = removeDiacritics((item.$option.dataset.search || '').toLowerCase());
+                        const keywords = term.split(/\s+/);
+                        const anyMatch = keywords.some(k => searchData.includes(k));
+                        return anyMatch ? 1 : 0;
+                    };
+                }
+            });
+        });
+
+        // Gọi Ajax filter khi thay đổi
+        document.getElementById('patientFilter').addEventListener('change', function () {
+            const patientId = this.value;
+            const pageSize = document.getElementById('activePageSizeSelect').value;
+
+            $.ajax({
+                url: '@Url.Action("PartialInvoiceTable", "Invoice")',
+                type: 'GET',
+                data: {
+                    page: 1,
+                    pageSize: pageSize,
+                    patientId: patientId
+                },
+                success: function (result) {
+                    $('#invoiceTableContainer').html(result);
+                    $('#activePageSizeSelect').val(pageSize);
+                },
+                error: function () {
+                    alert("Lỗi khi lọc hóa đơn.");
+                }
+            });
+        });
+    </script>
+
+    @* Custom format ngày tạo *@
     <script>
         $(document).ready(function () {
             const dateInputIds = ["CreatedAt"];
 
             dateInputIds.forEach(function (id) {
                 const input = document.getElementById(id);
+                const error = document.getElementById(id + "Error");
 
                 if (!input) return;
 
-                // Format đầu vào: dd-mm-yyyy
+                // Hàm kiểm tra định dạng dd-mm-yyyy và hợp lệ
+                function isValidDateFormat(value) {
+                    const regex = /^(\d{2})-(\d{2})-(\d{4})$/;
+                    const match = value.match(regex);
+                    if (!match) return false;
+
+                    const day = parseInt(match[1], 10);
+                    const month = parseInt(match[2], 10);
+                    const year = parseInt(match[3], 10);
+
+                    const date = new Date(year, month - 1, day);
+                    return (
+                        date.getFullYear() === year &&
+                        date.getMonth() === month - 1 &&
+                        date.getDate() === day
+                    );
+                }
+
+                // Format khi người dùng nhập
                 input.addEventListener("input", function () {
                     let value = input.value.replace(/\D/g, "");
                     let formatted = "";
@@ -378,9 +471,19 @@
                         const diff = newLength - prevLength;
                         input.setSelectionRange(selectionStart + diff, selectionStart + diff);
                     }
+
+                    // Validate ngay sau khi nhập xong
+                    if (input.value.length === 10) {
+                        if (!isValidDateFormat(input.value)) {
+                            error.classList.remove("d-none");
+                            input.value = "";
+                        } else {
+                            error.classList.add("d-none");
+                        }
+                    }
                 });
 
-                // Chọn vùng ngày/tháng/năm khi click
+                // Click để chọn vùng ngày/tháng/năm
                 input.addEventListener("click", function () {
                     const pos = input.selectionStart;
                     if (pos <= 2) input.setSelectionRange(0, 2);
@@ -388,7 +491,7 @@
                     else input.setSelectionRange(6, 10);
                 });
 
-                // Xử lý backspace/delete ở dấu "-"
+                // Xử lý backspace/delete tại dấu "-"
                 input.addEventListener("keydown", function (e) {
                     const pos = input.selectionStart;
                     let val = input.value;
@@ -417,28 +520,68 @@
 
             $('#CreatedAt').datepicker(datepickerConfig);
 
-            // Icon lịch click thì hiện lịch
+            // Hiển thị lịch khi nhấn icon
             $('#CreatedAt').next('.input-group-text').click(function () {
                 $('#CreatedAt').datepicker('show');
             });
         });
     </script>
+
+    @* Get data from file .json into dropdownlist *@
     <script>
         $(document).ready(function () {
-            console.log("Loading PaymentMethod.json...");
             $.getJSON("/data/PaymentMethod.json", function (data) {
-                console.log("PaymentMethod data:", data);
                 $.each(data, function (i, item) {
-                    $('#paymentMethodDropdown').append($('<option>', {
+                    const fullName = item.PaymentMethodName.toLowerCase();
+                    const initials = toInitials(item.PaymentMethodName);
+                    const search = `${fullName} ${initials}`;
+
+                    $('#PaymentMethodId').append($('<option>', {
                         value: item.PaymentMethodId,
-                        text: item.PaymentMethodName
+                        text: item.PaymentMethodName,
+                        'data-search': search
                     }));
                 });
+
+                // Khởi tạo Tom Select SAU KHI append option
+                new TomSelect("#PaymentMethodId", {
+                    create: false,
+                    placeholder: "Chọn phương thức thanh toán...",
+                    sortField: {
+                        field: "text",
+                        direction: "asc"
+                    },
+                    score: function (search) {
+                        const term = removeDiacritics(search.toLowerCase().trim());
+                        return function (item) {
+                            const searchData = removeDiacritics((item.$option.dataset.search || '').toLowerCase());
+                            const keywords = term.split(/\s+/);
+                            const anyMatch = keywords.some(k => searchData.includes(k));
+                            return anyMatch ? 1 : 0;
+                        };
+                    }
+                });
+
             }).fail(function (jqxhr, textStatus, error) {
                 console.error("Error loading JSON:", textStatus, error);
             });
         });
+
+        function removeDiacritics(str) {
+            return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+        }
+
+        function toInitials(str) {
+            return str
+                .split(' ')
+                .filter(x => x.length > 0)
+                .map(x => x[0])
+                .join('')
+                .toLowerCase();
+        }
     </script>
+
+    @* search for table list *@
     <script>
         document.addEventListener('DOMContentLoaded', function () {
 
@@ -475,21 +618,6 @@
                 });
             });
 
-            // Dropdown lọc bệnh nhân
-            document.getElementById('patientFilter').addEventListener('change', function () {
-                const selectedName = removeVietnameseTones(this.value.toLowerCase().trim());
-                const rows = document.querySelectorAll('#invoiceTable tbody tr');
-
-                rows.forEach(row => {
-                    const patientCell = row.querySelector('td.text-left');
-                    if (!patientCell) return;
-
-                    const cellText = removeVietnameseTones(patientCell.textContent.toLowerCase().trim());
-
-                    row.style.display = selectedName === "" || cellText.includes(selectedName) ? '' : 'none';
-                });
-            });
-
             // Tìm kiếm cho hóa đơn đã vô hiệu
             document.getElementById('inactiveInvoiceSearchBtn')?.addEventListener('click', function () {
                 const keyword = removeVietnameseTones(document.getElementById('inactiveInvoiceSearchInput').value.toLowerCase().trim());
@@ -520,21 +648,348 @@
 
         });
     </script>
+
+    @* handle pagesize for table list active*@
+    <script>
+        $(document).ready(function () {
+            console.log("here");
+            // Khi thay đổi pageSize
+            $(document).on('change', '#activePageSizeSelect', function () {
+                var pageSize = $(this).val();
+                loadInvoiceTable(1, pageSize); // load lại trang 1
+            });
+
+            // Delegate click pagination để vẫn hoạt động sau khi reload partial
+            $(document).on('click', '#invoiceTableContainer .pagination a', function (e) {
+                e.preventDefault();
+                var url = new URL($(this).attr('href'), window.location.origin);
+                var page = url.searchParams.get("page") || 1;
+                var pageSize = $('#activePageSizeSelect').val();
+                loadInvoiceTable(page, pageSize);
+            });
+
+            function loadInvoiceTable(page, pageSize) {
+                console.log("a");
+                $.ajax({
+                    url: '@Url.Action("PartialInvoiceTable", "Invoice")',
+                    type: 'GET',
+                    data: { page: page, pageSize: pageSize },
+                    success: function (result) {
+                        $('#invoiceTableContainer').html(result);
+                        $('#activePageSizeSelect').val(pageSize);
+                    },
+                    error: function () {
+                        alert("Lỗi khi tải bảng hóa đơn.");
+                    }
+                });
+            }
+        });
+    </script>
+
+    @* handle restore and pagesize for table list inactive *@
+    <script>
+        $(document).ready(function () {
+            // Sự kiện click nút khôi phục
+            $(document).on('click', '.restore-btn', function () {
+                const invoiceId = $(this).data('id');
+                const page = $('.pagination .active a').text() || 1;
+                const pageSize = $('#inactivePageSizeSelect').val();
+
+                if (!confirm("Bạn có chắc muốn khôi phục hóa đơn này?")) return;
+
+                $.ajax({
+                    url: '/Invoice/Restore', // Đổi lại đúng tên controller
+                    method: 'POST',
+                    data: { invoiceId: invoiceId, page: page, pageSize: pageSize },
+                    success: function (result) {
+                        $('#InactiveInvoiceTableContainer').html(result);
+                    },
+                    error: function (xhr) {
+                        alert('Đã xảy ra lỗi khi khôi phục hóa đơn.');
+                    }
+                });
+            });
+
+            // Sự kiện thay đổi pageSize cũng cần gửi AJAX nếu muốn đồng bộ
+            $('#inactivePageSizeSelect').change(function () {
+                const pageSize = $(this).val();
+                $.get('/Invoice/Index', { pageSize: pageSize }, function (data) {
+                    $('#InactiveInvoiceTableContainer').html($(data).find('#InactiveInvoiceTableContainer').html());
+                });
+            });
+        });
+    </script>
+
+    @* handle remove not reload page for table list *@
+    <script>
+        $(document).on('click', '.delete-invoice', function () {
+            const invoiceId = $(this).data('id');
+            const page = $('.pagination .active a').text() || 1;
+            const pageSize = $('#pageSizeSelect').val();
+
+            if (!confirm("Bạn có chắc muốn xóa hóa đơn này?")) return;
+
+            $.ajax({
+                url: '/Invoice/Remove',
+                type: 'POST',
+                data: { invoiceId: invoiceId, page: page, pageSize: pageSize },
+                success: function (result) {
+                    $('#invoiceTableContainer').html(result);
+                },
+                error: function () {
+                    alert("Lỗi khi xóa hóa đơn.");
+                }
+            });
+        });
+    </script>
+
+    @* validate dropdownlist *@
+    <script>
+        $(document).ready(function () {
+            function removeDiacritics(str) {
+                return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+            }
+
+            function customMatcher(params, data) {
+                console.log("params.term:", params.term);
+                if ($.trim(params.term) === '') return data;
+                if (typeof data.text === 'undefined') return null;
+
+                const term = removeDiacritics(params.term.toLowerCase().trim());
+                const search = removeDiacritics(($(data.element).data('search') || '').toLowerCase());
+
+                const keywords = term.split(/\s+/);
+                const anyMatch = keywords.some(kw => search.includes(kw));
+
+                return anyMatch ? data : null;
+            }
+
+            $('.select2').select2({
+                allowClear: true,
+                matcher: customMatcher,
+                placeholder: function () {
+                    return $(this).data('placeholder') || "Chọn...";
+                }
+            });
+
+            $('#invoiceForm').on('submit', function (e) {
+                let hasError = false;
+
+                // Kiểm tra bệnh nhân
+                const patientId = $('#PatientId').val();
+                if (!patientId) {
+                    e.preventDefault();
+                    $('#PatientId-error').removeClass('d-none');
+                    $('#PatientId').next('.select2-container').find('.select2-selection').addClass('is-invalid');
+                    hasError = true;
+                } else {
+                    $('#PatientId-error').addClass('d-none');
+                    $('#PatientId').next('.select2-container').find('.select2-selection').removeClass('is-invalid');
+                }
+
+                // Kiểm tra bác sĩ
+                const doctorId = $('#DoctorId').val();
+                if (!doctorId) {
+                    e.preventDefault();
+                    $('#DoctorId-error').removeClass('d-none');
+                    $('#DoctorId').next('.select2-container').find('.select2-selection').addClass('is-invalid');
+                    hasError = true;
+                } else {
+                    $('#DoctorId-error').addClass('d-none');
+                    $('#DoctorId').next('.select2-container').find('.select2-selection').removeClass('is-invalid');
+                }
+
+                // Kiểm tra thu ngân
+                const cashierId = $('#CashierId').val();
+                if (!cashierId) {
+                    e.preventDefault();
+                    $('#CashierId-error').removeClass('d-none');
+                    $('#CashierId').next('.select2-container').find('.select2-selection').addClass('is-invalid');
+                    hasError = true;
+                } else {
+                    $('#CashierId-error').addClass('d-none');
+                    $('#CashierId').next('.select2-container').find('.select2-selection').removeClass('is-invalid');
+                }
+
+                // Kiểm tra dược sĩ
+                const pharmacistId = $('#PharmacistId').val();
+                if (!pharmacistId) {
+                    e.preventDefault();
+                    $('#PharmacistId-error').removeClass('d-none');
+                    $('#PharmacistId').next('.select2-container').find('.select2-selection').addClass('is-invalid');
+                    hasError = true;
+                } else {
+                    $('#PharmacistId-error').addClass('d-none');
+                    $('#PharmacistId').next('.select2-container').find('.select2-selection').removeClass('is-invalid');
+                }
+
+                // Kiểm tra chẩn đoán
+                const diagnosisId = $('#DiagnosisId').val();
+                if (!diagnosisId) {
+                    e.preventDefault();
+                    $('#DiagnosisId-error').removeClass('d-none');
+                    $('#DiagnosisId').next('.select2-container').find('.select2-selection').addClass('is-invalid');
+                    hasError = true;
+                } else {
+                    $('#DiagnosisId-error').addClass('d-none');
+                    $('#DiagnosisId').next('.select2-container').find('.select2-selection').removeClass('is-invalid');
+                }
+
+                // Kiểm tra phương thức thanh toán
+                const paymentMethodId = $('#PaymentMethodId').val();
+                if (!paymentMethodId) {
+                    e.preventDefault();
+                    $('#PaymentMethodId-error').removeClass('d-none');
+                    $('#PaymentMethodId').next('.select2-container').find('.select2-selection').addClass('is-invalid');
+                    hasError = true;
+                } else {
+                    $('#PaymentMethodId-error').addClass('d-none');
+                    $('#PaymentMethodId').next('.select2-container').find('.select2-selection').removeClass('is-invalid');
+                }
+
+                // Kiểm tra tổng tiền
+                const totalAmount = $('#TotalAmount').val().trim();
+                if (!totalAmount) {
+                    e.preventDefault();
+                    $('#TotalAmount-error').removeClass('d-none');
+                    $('#TotalAmount').next('.select2-container').find('.select2-selection').addClass('is-invalid');
+                    hasError = true;
+                } else {
+                    $('#TotalAmount-error').addClass('d-none');
+                    $('#TotalAmount').removeClass('is-invalid');
+                }
+
+                // Nếu cần, có thể focus vào trường lỗi đầu tiên
+                if (hasError) {
+                    $('html, body').animate({
+                        scrollTop: $('.is-invalid').first().offset().top - 100
+                    }, 500);
+                }
+            });
+
+            // Khi chọn lại bệnh nhân
+            $('#PatientId').on('change', function () {
+                if ($(this).val()) {
+                    $('#PatientId-error').addClass('d-none');
+                    $('#PatientId').next('.select2-container').find('.select2-selection').removeClass('is-invalid');
+                }
+            });
+
+            // Khi chọn lại bác sĩ
+            $('#DoctorId').on('change', function () {
+                if ($(this).val()) {
+                    $('#DoctorId-error').addClass('d-none');
+                    $('#DoctorId').next('.select2-container').find('.select2-selection').removeClass('is-invalid');
+                }
+            });
+
+            // Khi chọn lại thu ngân
+            $('#CashierId').on('change', function () {
+                if ($(this).val()) {
+                    $('#CashierId-error').addClass('d-none');
+                    $('#CashierId').next('.select2-container').find('.select2-selection').removeClass('is-invalid');
+                }
+            });
+
+            // Khi chọn lại thu ngân
+            $('#PharmacistId').on('change', function () {
+                if ($(this).val()) {
+                    $('#PharmacistId-error').addClass('d-none');
+                    $('#PharmacistId').next('.select2-container').find('.select2-selection').removeClass('is-invalid');
+                }
+            });
+
+            // Khi chọn lại chẩn đoán
+            $('#DiagnosisId').on('change', function () {
+                if ($(this).val()) {
+                    $('#DiagnosisId-error').addClass('d-none');
+                    $('#DiagnosisId').next('.select2-container').find('.select2-selection').removeClass('is-invalid');
+                }
+            });
+
+            // Khi chọn lại phương thức thanh toán
+            $('#PaymentMethodId').on('change', function () {
+                if ($(this).val()) {
+                    $('#PaymentMethodId-error').addClass('d-none');
+                    $('#PaymentMethodId').next('.select2-container').find('.select2-selection').removeClass('is-invalid');
+                }
+            });
+
+            // Khi điền lại tổng tiền
+            $('#TotalAmount').on('input', function () {
+                if ($(this).val().trim()) {
+                    $('#TotalAmount-error').addClass('d-none');
+                    $(this).removeClass('is-invalid');
+                }
+            });
+        });
+
+    </script>
+
+    @* xử lý khi click vào tab bảng hóa đơn vô hiệu thì mới tải table list lên *@
+    <script>
+        $('#inactive-tab').on('shown.bs.tab', function () {
+            const container = $('#inactive-invoice-container');
+            if (container.data('loaded')) return;
+
+            $.get('@Url.Action("LoadInactiveInvoices", "Invoice")', function (data) {
+                container.html(data);
+                container.data('loaded', true);
+            }).fail(function () {
+                container.html('<div class="text-danger">Lỗi khi tải dữ liệu hóa đơn vô hiệu.</div>');
+            });
+        });
+    </script>
+
+    <script>
+        $(document).on('click', '.ajax-page-link', function (e) {
+            e.preventDefault();
+            const url = $(this).attr('href');
+
+            $.ajax({
+                url: url,
+                type: 'GET',
+                success: function (data) {
+                    $('#invoiceTableContainer').html(data);
+                },
+                error: function () {
+                    alert("Lỗi khi chuyển trang.");
+                }
+            });
+        });
+    </script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const alertBox = document.querySelector(".alert");
+            if (alertBox) {
+                // Cuộn lên đầu trang để focus alert
+                alertBox.scrollIntoView({ behavior: "smooth", block: "start" });
+
+                // Tự động đóng sau 3 giây
+                setTimeout(function () {
+                    $(alertBox).alert('close');
+                }, 3000);
+            }
+        });
+    </script>
 }
 
 <script>
+    // handle function edit
     function editInvoice(invoiceId, patientId, doctorId, cashierId, pharmacistId, diagnosisId, paymentMethodId, statusId, totalAmount, notes, createdAt) {
-        document.getElementById('InvoiceId').value = invoiceId;
-        document.querySelector('[name="TotalAmount"]').value = totalAmount;
-        document.querySelector('[name="Notes"]').value = notes;
-        document.querySelector('[name="PatientId"]').value = patientId;
-        document.querySelector('[name="DoctorId"]').value = doctorId;
-        document.querySelector('[name="CashierId"]').value = cashierId;
-        document.querySelector('[name="PharmacistId"]').value = pharmacistId;
-        document.querySelector('[name="DiagnosisId"]').value = diagnosisId;
-        document.querySelector('[name="PaymentMethodId"]').value = paymentMethodId;
-        document.querySelector('[name="StatusId"]').value = statusId;
-        document.querySelector('[name="CreatedAt"]').value = formatDateForInput(createdAt);
+        $('#PatientId')[0].tomselect.setValue(String(patientId));
+        $('#DoctorId')[0].tomselect.setValue(String(doctorId));
+        $('#CashierId')[0].tomselect.setValue(String(cashierId));
+        $('#PharmacistId')[0].tomselect.setValue(String(pharmacistId));
+        $('#DiagnosisId')[0].tomselect.setValue(String(diagnosisId));
+        $('#PaymentMethodId')[0].tomselect.setValue(String(paymentMethodId));
+        $('#StatusId')[0].tomselect.setValue(String(statusId));
+
+        $('#InvoiceId').val(invoiceId);
+        $('[name="TotalAmount"]').val(Number(totalAmount).toLocaleString().replace(/\./g, ','));
+        $('[name="Notes"]').val(notes);
+        $('[name="CreatedAt"]').val(formatDateForInput(createdAt));
 
         fetch(`/Invoice/GetInvoiceDetails?invoiceId=${invoiceId}`)
             .then(res => res.json())
@@ -549,32 +1004,72 @@
                     row.dataset.index = index;
 
                     row.innerHTML = `
-                        <input type="hidden" name="InvoiceDetails[${index}].InvoiceDetailId" value="${detail.InvoiceDetailId}" />
-                        <div class="col-md-6">
-                            <label>Item</label>
-                            <select name="InvoiceDetails[${index}].ItemId" class="form-control">
-                                ${renderItemOptions(detail.itemId)}
-                            </select>
-                        </div>
-                        <div class="col-md-4">
-                            <label>Số lượng</label>
-                            <input type="number" name="InvoiceDetails[${index}].Quantity" class="form-control" value="${detail.quantity}" min="1" />
-                        </div>
-                        <div class="col-md-2 d-flex align-items-end">
-                            <button type="button" class="btn btn-danger remove-detail">X</button>
-                        </div>`;
+            <input type="hidden" name="InvoiceDetails[${index}].InvoiceDetailId" value="${detail.InvoiceDetailId}" />
+            <div class="col-md-6">
+                <label>Dịch vụ / thuốc</label>
+                <select name="InvoiceDetails[${index}].ItemId" class="tom-select">
+                    ${renderItemOptions(detail.itemId)}
+                </select>
+            </div>
+            <div class="col-md-4">
+                <label>Số lượng</label>
+                <input type="number" name="InvoiceDetails[${index}].Quantity" class="form-control" value="${detail.quantity}" min="1" />
+            </div>
+            <div class="col-md-2 d-flex align-items-end">
+                <button type="button" class="btn btn-danger remove-detail">X</button>
+            </div>`;
                     container.appendChild(row);
+
+                    const selectEl = row.querySelector('.tom-select');
+                    initTomSelect(selectEl); // ✅ dùng hàm chung
                     detailIndex++;
                 });
             });
+
+        $('html, body').animate({
+            scrollTop: $(".invoice-box").offset().top
+        }, 500);
+    }
+
+    function removeDiacritics(str) {
+        return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    }
+
+    function initTomSelect(el) {
+        new TomSelect(el, {
+            create: false,
+            allowEmptyOption: true,
+            placeholder: el.getAttribute('data-placeholder') || 'Chọn...',
+            sortField: {
+                field: "text",
+                direction: "asc"
+            },
+            score: function (search) {
+                const term = removeDiacritics(search.toLowerCase().trim());
+                return function (item) {
+                    const searchData = removeDiacritics((item.$option.dataset.search || '').toLowerCase());
+                    const keywords = term.split(/\s+/);
+                    const anyMatch = keywords.some(k => searchData.includes(k));
+                    return anyMatch ? 1 : 0;
+                };
+            }
+        });
     }
 
     // Xử lý chọn option tương ứng trong select khi nhấn nút sửa
     function renderItemOptions(selectedId) {
         const items = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(items));
-        return items.map(i =>
-            `<option value="${i.ItemId}" ${i.ItemId === selectedId ? 'selected' : ''}>${i.ItemName}</option>`
-        ).join('');
+
+        return items.map(i => {
+            const fullName = i.ItemName.toLowerCase();
+            const initials = i.ItemName
+                .split(' ')
+                .map(w => w[0])
+                .join('')
+                .toLowerCase();
+            const selected = i.ItemId === selectedId ? 'selected' : '';
+            return `<option value="${i.ItemId}" data-search="${fullName} ${initials}" ${selected}>${i.ItemName}</option>`;
+        }).join('');
     }
 
     // Thêm chi tiết đơn hàng trên form
@@ -621,13 +1116,15 @@
     }
 
     // Xử lý format số. Ví dụ: 1000000 -> 1,000,000
-    document.getElementById("TotalAmount").addEventListener("input", function (e) {
-        let value = e.target.value.replace(/,/g, '').replace(/\D/g, ''); // chỉ giữ số
-        if (value !== "") {
-            e.target.value = Number(value).toLocaleString('en-US'); // định dạng lại có dấu ,
-        } else {
-            e.target.value = "";
-        }
+    document.querySelectorAll('.format-number').forEach(function (input) {
+        input.addEventListener("input", function (e) {
+            let value = e.target.value.replace(/,/g, '').replace(/\D/g, ''); // chỉ giữ số
+            if (value !== "") {
+                e.target.value = Number(value).toLocaleString('en-US'); // định dạng lại có dấu ,
+            } else {
+                e.target.value = "";
+            }
+        })
     });
 
     document.getElementById("CreatedAt").addEventListener("input", function (e) {

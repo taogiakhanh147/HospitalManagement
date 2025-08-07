@@ -1,0 +1,73 @@
+﻿@using X.PagedList
+@using X.PagedList.Mvc.Core
+@model IPagedList<Hospital.Models.ViewModels.InvoiceViewModel>
+@{
+    var pageSize = ViewBag.PageSize;
+}
+<h4>Danh sách hóa đơn vô hiệu</h4>
+<table id="inactiveInvoiceTable" class="table table-bordered table-striped table-hover">
+    <thead class="custom-header">
+        <tr>
+            <th>Bệnh nhân</th>
+            <th>Thu ngân</th>
+            <th>Chẩn đoán</th>
+            <th>Phương thức</th>
+            <th>Trạng thái</th>
+            <th>Tổng tiền</th>
+            <th>Ngày tạo</th>
+            <th>Tuỳ chọn</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td class="text-left">@item.PatientName</td>
+                <td class="text-left">@item.CashierName</td>
+                <td class="text-left">@item.DiagnosisName</td>
+                <td class="text-left">@item.PaymentMethodName</td>
+                <td class="text-left">@item.StatusName</td>
+                <td class="text-right">@item.TotalAmount.ToString("N0")</td>
+                <td class="text-center">@item.CreatedAt.ToString("dd-MM-yyyy")</td>
+                <td class="text-center">
+                    <input type="hidden" name="invoiceId" value="@item.InvoiceId" />
+                    <button type="submit" class="btn btn-sm btn-danger restore-btn" data-id="@item.InvoiceId" title="Khôi phục">
+                        <i class="fa fa-undo"></i>
+                    </button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<div class="row align-items-center mt-3">
+    <div class="col-md-6">
+        <div class="d-inline-block">
+            <select id="inactivePageSizeSelect" class="form-control d-inline-block w-auto ml-2">
+                @{
+                    var pageSizes = new[] { 5, 10, 15, 20 };
+                    foreach (var size in pageSizes)
+                    {
+                        if (pageSize == size)
+                        {
+                            <option value="@size" selected>@size</option>
+                        }
+                        else
+                        {
+                            <option value="@size">@size</option>
+                        }
+                    }
+                }
+            </select>
+        </div>
+    </div>
+    <!-- Pagination bên phải -->
+    <div class="col-md-6 text-right">
+        @Html.PagedListPager(Model, page => Url.Action("Index", new { page, pageSize = ViewBag.PageSize }), new PagedListRenderOptions
+   {
+       Display = PagedListDisplayMode.Always,
+       UlElementClasses = new[] { "pagination", "justify-content-end", "mb-0" },
+       LiElementClasses = new[] { "page-item" },
+       PageClasses = new[] { "page-link" }
+   })
+    </div>
+</div>
